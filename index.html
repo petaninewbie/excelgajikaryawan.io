@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Praktik Excel - Sistem Penggajian PT. Modal Utama</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --accent: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Header / Banner */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: #e0f2fe;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: #bfdbfe;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: var(--primary-light);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #334155;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 28px 0 14px 0;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 6px;
+        }
+
+        .section-num {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            text-transform: uppercase;
+        }
+
+        /* Grid & Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--primary-light);
+            padding: 12px 14px;
+            border-radius: 6px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.88rem;
+            margin-bottom: 4px;
+        }
+
+        .card-desc {
+            font-size: 0.82rem;
+            color: #475569;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .font-mono { font-family: 'Consolas', 'Courier New', monospace; }
+
+        /* Formula Tag & Copy Code */
+        .formula-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: #0369a1;
+        }
+
+        .btn-copy {
+            background: #e0f2fe;
+            border: none;
+            color: #0284c7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-copy:hover {
+            background: #bae6fd;
+        }
+
+        /* Steps List */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 6px;
+        }
+
+        .step-number {
+            background: var(--primary-light);
+            color: white;
+            font-weight: bold;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+
+        .step-text {
+            font-size: 0.85rem;
+            color: #334155;
+        }
+
+        /* Print Media Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .action-bar, .btn-copy {
+                display: none !important;
+            }
+
+            .header {
+                background: #1e3a8a !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            th {
+                background-color: #1e3a8a !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Action Bar (Hide in Print) -->
+        <div class="action-bar">
+            <button class="btn btn-secondary" onclick="window.print()">
+                🖨️ Cetak / Simpan PDF
+            </button>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <span class="header-badge">PT. Modal Utama • Lab Excel #04</span>
+            <h1>MODUL PRAKTIK: SISTEM PENGGAJIAN KARYAWAN</h1>
+            <p>Panduan Praktikum Pengolahan Data Gaji Menggunakan VLOOKUP, IF Bercabang, dan Statistik</p>
+        </div>
+
+        <!-- I. Tujuan Praktikum -->
+        <div class="section-header">
+            <span class="section-num">I</span>
+            <h2 class="section-title">Tujuan Praktikum</h2>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">1. Format Data Numerik</div>
+                <div class="card-desc">Menguasai pengaturan format mata uang (<em>Accounting/Currency</em>) dengan simbol Rp.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">2. Pencarian Data Master</div>
+                <div class="card-desc">Menerapkan fungsi <span class="font-mono">VLOOKUP</span> dengan referensi sel absolut ($).</div>
+            </div>
+            <div class="card">
+                <div class="card-title">3. Logika Kondisional</div>
+                <div class="card-desc">Mengaplikasikan fungsi <span class="font-mono">IF</span> bercabang untuk menghitung tunjangan &amp; PPh 21.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">4. Agregasi Statistik</div>
+                <div class="card-desc">Menggunakan fungsi <span class="font-mono">SUM, AVERAGE, MAX, MIN</span>, dan <span class="font-mono">COUNTIF</span>.</div>
+            </div>
+        </div>
+
+        <!-- II. Tabel Referensi Master & Ketentuan -->
+        <div class="section-header">
+            <span class="section-num">II</span>
+            <h2 class="section-title">Tabel Referensi Master &amp; Ketentuan Aturan</h2>
+        </div>
+
+        <div class="grid-2">
+            <div>
+                <p style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 6px;">
+                    Tabel Referensi Gaji (Range: <span class="font-mono">K3:N6</span>)
+                </p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Golongan</th>
+                                <th>Gaji Pokok</th>
+                                <th>Tunj. Jabatan</th>
+                                <th>Tunj. Makan/Hari</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center font-mono"><strong>GOL-1</strong></td>
+                                <td class="text-right">Rp3.500.000</td>
+                                <td class="text-right">Rp500.000</td>
+                                <td class="text-right">Rp25.000</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center font-mono"><strong>GOL-2</strong></td>
+                                <td class="text-right">Rp5.000.000</td>
+                                <td class="text-right">Rp1.000.000</td>
+                                <td class="text-right">Rp35.000</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center font-mono"><strong>GOL-3</strong></td>
+                                <td class="text-right">Rp7.500.000</td>
+                                <td class="text-right">Rp2.000.000</td>
+                                <td class="text-right">Rp50.000</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center font-mono"><strong>GOL-4</strong></td>
+                                <td class="text-right">Rp11.000.000</td>
+                                <td class="text-right">Rp3.500.000</td>
+                                <td class="text-right">Rp75.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                <p style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 6px;">
+                    Ketentuan Perhitungan Rumus
+                </p>
+                <div class="card" style="border-left-color: #0284c7; background: #f0f9ff;">
+                    <ul style="font-size: 0.82rem; padding-left: 16px; color: #334155;">
+                        <li style="margin-bottom: 4px;"><strong>Tunjangan Transport:</strong> Status "Tetap" = Rp750.000, "Kontrak" = Rp400.000.</li>
+                        <li style="margin-bottom: 4px;"><strong>Total Tunj. Makan:</strong> Hari Hadir × Tarif Makan (dari Tabel Master).</li>
+                        <li style="margin-bottom: 4px;"><strong>Gaji Kotor:</strong> Gaji Pokok + Tunj. Jabatan + Tunj. Transport + Total Tunj. Makan.</li>
+                        <li style="margin-bottom: 4px;"><strong>Potongan PPh 21:</strong> Jika Gaji Kotor > Rp10.000.000 kena 5%, jika ≤ Rp10.000.000 kena 2%.</li>
+                        <li><strong>BPJS:</strong> 1% dari Gaji Pokok.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- III. Lembar Kerja Praktik -->
+        <div class="section-header">
+            <span class="section-num">III</span>
+            <h2 class="section-title">Lembar Kerja Utama (Input Data Karyawan)</h2>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">
+            Buatlah struktur tabel penggajian berikut pada Sheet Excel Anda mulai dari sel <span class="font-mono">A5</span>:
+        </p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>NIK</th>
+                        <th>Nama Karyawan</th>
+                        <th>Gol</th>
+                        <th>Status</th>
+                        <th>Hadir</th>
+                        <th>Gaji Pokok</th>
+                        <th>Tunj. Jabatan</th>
+                        <th>Tunj. Transport</th>
+                        <th>Total T. Makan</th>
+                        <th>Gaji Kotor</th>
+                        <th>PPh 21</th>
+                        <th>BPJS</th>
+                        <th>Tot. Potongan</th>
+                        <th>Gaji Bersih</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">1</td>
+                        <td class="text-center font-mono">MU-001</td>
+                        <td>Budi Santoso</td>
+                        <td class="text-center font-mono">GOL-2</td>
+                        <td class="text-center">Tetap</td>
+                        <td class="text-center font-mono">22</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">2</td>
+                        <td class="text-center font-mono">MU-002</td>
+                        <td>Siti Aminah</td>
+                        <td class="text-center font-mono">GOL-1</td>
+                        <td class="text-center">Kontrak</td>
+                        <td class="text-center font-mono">20</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">3</td>
+                        <td class="text-center font-mono">MU-003</td>
+                        <td>Rian Hidayat</td>
+                        <td class="text-center font-mono">GOL-3</td>
+                        <td class="text-center">Tetap</td>
+                        <td class="text-center font-mono">21</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">4</td>
+                        <td class="text-center font-mono">MU-004</td>
+                        <td>Dewi Lestari</td>
+                        <td class="text-center font-mono">GOL-4</td>
+                        <td class="text-center">Tetap</td>
+                        <td class="text-center font-mono">22</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">5</td>
+                        <td class="text-center font-mono">MU-005</td>
+                        <td>Ahmad Fauzi</td>
+                        <td class="text-center font-mono">GOL-1</td>
+                        <td class="text-center">Tetap</td>
+                        <td class="text-center font-mono">19</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">6</td>
+                        <td class="text-center font-mono">MU-006</td>
+                        <td>Citra Kirana</td>
+                        <td class="text-center font-mono">GOL-2</td>
+                        <td class="text-center">Kontrak</td>
+                        <td class="text-center font-mono">22</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">7</td>
+                        <td class="text-center font-mono">MU-007</td>
+                        <td>Doni Pratama</td>
+                        <td class="text-center font-mono">GOL-3</td>
+                        <td class="text-center">Kontrak</td>
+                        <td class="text-center font-mono">18</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                        <td class="text-center font-mono" style="color:#94a3b8;">[Formula]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- IV. Kunci Formula Excel -->
+        <div class="section-header">
+            <span class="section-num">IV</span>
+            <h2 class="section-title">Kunci Formula Excel (Posisi Baris Pertama / Sel Baris 6)</h2>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40px;">Sel</th>
+                        <th>Nama Field</th>
+                        <th>Formula Excel</th>
+                        <th>Keterangan Fungsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center font-mono"><strong>G6</strong></td>
+                        <td>Gaji Pokok</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f1">=VLOOKUP(D6, $K$3:$N$6, 2, FALSE)</span>
+                                <button class="btn-copy" onclick="copyFormula('f1')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Mengambil Gaji Pokok dari kolom ke-2 Tabel Master</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-mono"><strong>H6</strong></td>
+                        <td>Tunj. Jabatan</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f2">=VLOOKUP(D6, $K$3:$N$6, 3, FALSE)</span>
+                                <button class="btn-copy" onclick="copyFormula('f2')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Mengambil Tunjangan Jabatan dari kolom ke-3 Tabel Master</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-mono"><strong>I6</strong></td>
+                        <td>Tunj. Transport</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f3">=IF(E6="Tetap", 750000, 400000)</span>
+                                <button class="btn-copy" onclick="copyFormula('f3')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Pengecekan logika status karyawan Tetap/Kontrak</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-mono"><strong>J6</strong></td>
+                        <td>Total T. Makan</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f4">=F6 * VLOOKUP(D6, $K$3:$N$6, 4, FALSE)</span>
+                                <button class="btn-copy" onclick="copyFormula('f4')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Perkalian Hari Hadir dengan tarif makan dari Tabel Master</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-mono"><strong>K6</strong></td>
+                        <td>Gaji Kotor</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f5">=SUM(G6:J6)</span>
+                                <button class="btn-copy" onclick="copyFormula('f5')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Penjumlahan seluruh komponen pendapatan kotor</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-mono"><strong>L6</strong></td>
+                        <td>PPh 21</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f6">=IF(K6 > 10000000, K6 * 5%, K6 * 2%)</span>
+                                <button class="btn-copy" onclick="copyFormula('f6')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Tarif pajak 5% jika Gaji Kotor > 10jt, atau 2% jika <= 10jt</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-mono"><strong>M6</strong></td>
+                        <td>BPJS</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f7">=G6 * 1%</span>
+                                <button class="btn-copy" onclick="copyFormula('f7')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Perhitungan BPJS Ketenagakerjaan 1% dari Gaji Pokok</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-mono"><strong>N6</strong></td>
+                        <td>Tot. Potongan</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f8">=SUM(L6:M6)</span>
+                                <button class="btn-copy" onclick="copyFormula('f8')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Penjumlahan total PPh 21 dan BPJS</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center font-mono"><strong>O6</strong></td>
+                        <td>Gaji Bersih</td>
+                        <td>
+                            <div class="formula-box">
+                                <span id="f9">=K6 - N6</span>
+                                <button class="btn-copy" onclick="copyFormula('f9')">Salin</button>
+                            </div>
+                        </td>
+                        <td>Gaji Kotor dikurangi Total Potongan (Take Home Pay)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- V. Tabel Rekapitulasi & Statistik -->
+        <div class="section-header">
+            <span class="section-num">V</span>
+            <h2 class="section-title">Tabel Rekapitulasi &amp; Statistik</h2>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Keterangan Statistik</th>
+                        <th>Formula Excel</th>
+                        <th>Fungsi Utama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Total Pengeluaran Gaji</strong></td>
+                        <td class="font-mono" style="color:#0284c7;">=SUM(O6:O12)</td>
+                        <td>Menghitung jumlah total seluruh gaji bersih</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rata-Rata Gaji Bersih</strong></td>
+                        <td class="font-mono" style="color:#0284c7;">=AVERAGE(O6:O12)</td>
+                        <td>Menghitung rata-rata pembayaran gaji</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gaji Bersih Tertinggi</strong></td>
+                        <td class="font-mono" style="color:#0284c7;">=MAX(O6:O12)</td>
+                        <td>Mencari nominal gaji terbesar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gaji Bersih Terendah</strong></td>
+                        <td class="font-mono" style="color:#0284c7;">=MIN(O6:O12)</td>
+                        <td>Mencari nominal gaji terkecil</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jumlah Karyawan Tetap</strong></td>
+                        <td class="font-mono" style="color:#0284c7;">=COUNTIF(E6:E12, "Tetap")</td>
+                        <td>Menghitung jumlah staf berstatus Tetap</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jumlah Karyawan Kontrak</strong></td>
+                        <td class="font-mono" style="color:#0284c7;">=COUNTIF(E6:E12, "Kontrak")</td>
+                        <td>Menghitung jumlah staf berstatus Kontrak</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- VI. Langkah Kerja Praktikan -->
+        <div class="section-header">
+            <span class="section-num">VI</span>
+            <h2 class="section-title">Langkah Kerja Praktikan</h2>
+        </div>
+
+        <div class="steps">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-text"><strong>Input Data Master:</strong> Salin tabel referensi master ke rentang sel <span class="font-mono">K3:N6</span> dan buat tabel entri karyawan di sel <span class="font-mono">A5:F12</span>.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-text"><strong>Penerapan Formula:</strong> Tuliskan rumus pada baris ke-6 (sel <span class="font-mono">G6</span> s/d <span class="font-mono">O6</span>). Setelah itu gunakan *AutoFill* (tarik sudut sel kanan bawah) hingga baris 12.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-text"><strong>Formatting Accounting:</strong> Blok sel angka nominal (<span class="font-mono">G6:O12</span>), Klik kanan > <em>Format Cells</em> > <em>Number</em> > Pilih <strong>Accounting</strong> (Symbol: <span class="font-mono">Rp</span>, Decimals: <span class="font-mono">0</span>).</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-text"><strong>Data Validation:</strong> Blok kolom Golongan (<span class="font-mono">D6:D12</span>), buka menu <strong>Data</strong> > <strong>Data Validation</strong> > Pilih <em>List</em> > Isikan Source: <span class="font-mono">GOL-1, GOL-2, GOL-3, GOL-4</span>.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">5</div>
+                <div class="step-text"><strong>Conditional Formatting:</strong> Blok Gaji Bersih (<span class="font-mono">O6:O12</span>), klik <strong>Conditional Formatting</strong> > <em>Highlight Cells Rules</em> > <em>Greater Than</em> > Isikan <span class="font-mono">10000000</span> dengan format warna merah muda.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function copyFormula(id) {
+            const textToCopy = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Formula berhasil disalin: ' + textToCopy);
+            }).catch(err => {
+                console.error('Gagal menyalin: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
